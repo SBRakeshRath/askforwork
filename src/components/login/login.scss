@@ -1,0 +1,40 @@
+@use "./../../style/_config.sass" as dv;
+$main-width-padding: 5%;
+
+#login {
+  padding: 30px 0px;
+
+  header {
+    @include dv.header-center-main;
+    color: dv.$color-dark-blue;
+    margin-top: 0px;
+  }
+  .inputs {
+    padding: 0% $main-width-padding;
+    .form {
+      @include dv.flex-column;
+      margin: auto;
+
+      .text-field {
+        margin: 12px 0px;
+      }
+      .recaptcha-container {
+        margin-bottom: 15px;
+        box-shadow: 0px 0px 9px 0px #bbbaba inset;
+        background-color: #f9f9f9;
+      }
+      button {
+        float: right;
+      }
+    }
+    .otpHolder {
+      @include dv.flex-column;
+      margin-top: 30px;
+    }
+    a {
+      @include dv.text-link;
+      @include dv.flex-center;
+      text-align: center;
+    }
+  }
+}
