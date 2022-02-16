@@ -1,9 +1,10 @@
 import axios from "axios";
 
-const csrfAxiosApi = async (link, token, configuration) => {
+const csrfAxiosApi = async (path, token, configuration, apiRootLink) => {
   const config = configuration || {};
+  const bl = apiRootLink || "http://auth.backend.askforwork.in";
   const cfg = {
-    url: process.env.REACT_APP_BACKEND_LINK + "/ProtectedRouteRouter" + link,
+    url: bl + "/api" + path,
     headers: {
       "csrf-token": token,
     },
@@ -11,10 +12,10 @@ const csrfAxiosApi = async (link, token, configuration) => {
     withCredentials: true,
     ...config,
   };
-  const response = { res: {}, err: {} };
+  let response = {};
   try {
     const data = await axios(cfg);
-    response["res"] = data;
+    response = data;
   } catch (err) {
     throw err;
   }

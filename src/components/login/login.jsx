@@ -9,9 +9,13 @@ import "./login.scss";
 import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import TimeOutLoader from "g-components/text/timeOutLoader/TimeOutLoader";
 import { auth } from "firebase.js";
-// import { auth } from "firebase";
+import { useSelector, useDispatch } from "react-redux";
+import csrfAxiosApi from "g-components/axios/csrfAxios";
+import error_redux from "redux_local/actions/error";
+import { useNavigate } from "react-router-dom";
+
 export default function Login() {
-  const disabledTimeOut = "5";
+  const disabledTimeOut = "60";
   const [animatorBool, setAnimatorBool] = useState(false);
   const [smallMessage, setSmallMessage] = useState([
     "none",
@@ -32,6 +36,11 @@ export default function Login() {
   const recaptchaContainer = useRef(null);
   const otpRef = useRef(null);
   const resendOtpTimeOut = useRef(null);
+
+  const navigate = useNavigate();
+  //redux variables
+  const dispatch = useDispatch();
+  const csrfToken = useSelector((state) => state.globalVariables.csurf_token);
 
   const resetLoginForm = (err) => {
     setGetOtpDisabled(false);
@@ -78,8 +87,9 @@ export default function Login() {
         reSendOtp();
       })
       .catch((error) => {
+        dispatch(error_redux.firebaseError(error));
+
         resetLoginForm(true);
-        console.log(error);
 
         switch (error.code) {
           case "auth/invalid-phone-number":
@@ -101,9 +111,7 @@ export default function Login() {
             break;
         }
       })
-      .finally(() => {
-        console.log("completed");
-      });
+      .finally(() => {});
   };
 
   useLayoutEffect(() => {
@@ -119,9 +127,6 @@ export default function Login() {
           },
           "expired-callback": () => {
             setCaptchaCompleted(false);
-          },
-          "error-callback": () => {
-            console.log("error");
           },
         },
         auth
@@ -167,9 +172,51 @@ export default function Login() {
     conformationResult
       .confirm(otp)
       .then((res) => {
-        console.log(res);
+        csrfAxiosApi("/sessionToken", csrfToken, {
+          data: {
+            idToken: res.user.accessToken,
+          },
+        })
+          .then((tokenRes) => {
+            if (tokenRes.data.code === "SUCCESS") {
+              setSmallMessage(["suc", "successfully logged in"]);
+              navigate("/");
+              return;
+            }
+
+            dispatch(
+              error_redux.setCustomError({
+                message:
+                  "an Internal error occurred,  Please try again after some time",
+              })
+            );
+
+            setSmallMessage([
+              "err",
+              "an Internal error occurred,  Please try again after some time",
+            ]);
+          })
+          .catch(() => {
+            dispatch(
+              error_redux.setCustomError({
+                message:
+                  "an Internal error occurred,  Please try again after some time",
+              })
+            );
+
+            setSmallMessage([
+              "err",
+              "an Internal error occurred,  Please try again after some time",
+            ]);
+          })
+          .finally(() => {
+            setAnimatorBool(false);
+          });
+        //get session token
       })
       .catch((error) => {
+        dispatch(error_redux.firebaseError(error));
+
         switch (error.code) {
           case "auth/invalid-verification-code":
             setSmallMessage(["err", "wrong otp"]);
@@ -183,10 +230,9 @@ export default function Login() {
 
             break;
         }
-      })
-      .finally(() => {
         setAnimatorBool(false);
-      });
+      })
+      .finally(() => {});
   };
 
   return (
@@ -209,11 +255,11 @@ export default function Login() {
               hiddenInputRef={phoneNumRef}
               error={numError}
             />
+
+            <div className="recaptcha-container" ref={recaptchaContainer}></div>
             {otpTimeOutBool ? (
               <TimeOutLoader timeout={disabledTimeOut} text="resend OTP in" />
             ) : null}
-
-            <div className="recaptcha-container" ref={recaptchaContainer}></div>
             <Button
               disabled={getOtpDisabled}
               variant="contained"

@@ -4,7 +4,6 @@ import { useRef, useEffect, useState } from "react";
 export default function TopScroller(bool) {
   const scroll = useRef(null);
 
-
   function getRandomColor() {
     var letters = "0123456789ABCDEF";
     var color = "#";
@@ -50,8 +49,6 @@ export default function TopScroller(bool) {
       clearInterval(interval);
     };
   }, [list]);
-
-  console.log(list);
 
   return (
     <div className="animator">

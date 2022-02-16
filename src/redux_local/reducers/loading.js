@@ -37,7 +37,8 @@ class loadingReducerClass {
         break;
     }
 
-    return this.state;
+    const result = Object.create(this.state);
+    return result;
   }
 }
 const reducerFunction = (state = initialState, action) => {
