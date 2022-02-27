@@ -39,7 +39,7 @@ class errorReducerClass {
     switch (error.code) {
       case "auth/invalid-verification-code":
         this.state.status = 400;
-        this.state.msg = "an error occurred,  Please try again after some time";
+        this.state.msg = "wrong verification code";
         break;
       case "auth/invalid-phone-number":
         this.state.status = 400;
@@ -95,8 +95,7 @@ class errorReducerClass {
         break;
     }
 
-    const result = Object.create(this.state);
-    return result;
+    return {...this.state};
   }
 }
 const reducerFunction = (state = initialState, action) => {

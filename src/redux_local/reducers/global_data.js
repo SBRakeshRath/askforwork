@@ -30,8 +30,7 @@ class globalVariablesReducers {
         break;
     }
 
-    const result = Object.create(this.state);
-    return result;
+    return {...this.state};
   }
 }
 const reducerFunction = (state = initialState, action) => {

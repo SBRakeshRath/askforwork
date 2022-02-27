@@ -2,12 +2,10 @@ import "./App.css";
 import "style/import.scss";
 import React from "react";
 import Overlay from "g-components/overlays/overlay";
-import DashBoard from "components/dashboard/dashboard";
 import Login from "components/login/login";
 
-import { Routes, Route, useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import getCsurfToken from "redux_local/thunks/global_variables/csurfToken";
+import { Routes, Route } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import globalVariables from "redux_local/thunks/global_variables/globalVaribale";
 import GlobalErrorMessageBox from "g-components/box/globalErrorMessageBox/globalErrorMessageBox";
 
@@ -19,15 +17,13 @@ function App() {
     dispatch(globalVariables());
   }, [dispatch]);
 
-  console.log("rendering");
   return (
     <div className="App">
       <Overlay>
         <GlobalErrorMessageBox />
       </Overlay>
       <Routes>
-        <Route path="/" element={<DashBoard />}></Route>
-        <Route path="/login" element={<Login />}></Route>
+        <Route path="/" element={<Login />}></Route>
       </Routes>
     </div>
   );

@@ -22,6 +22,18 @@ $main-width-padding: 5%;
         margin-bottom: 15px;
         box-shadow: 0px 0px 9px 0px #bbbaba inset;
         background-color: #f9f9f9;
+        div {
+          width: 100%;
+          div {
+            width: 100% !important;
+            div {
+              width: 100%;
+              iframe{
+                width: 100%;
+              }
+            }
+          }
+        }
       }
       button {
         float: right;

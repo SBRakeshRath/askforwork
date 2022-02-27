@@ -1,5 +1,6 @@
 const initialState = {
   global: true,
+  dashboard : true 
 };
 
 class loadingReducerClass {
@@ -18,27 +19,25 @@ class loadingReducerClass {
   setLoading(name, bool) {
     this.state[name] = bool;
   }
-  reducerResponse() {
+  reducerResponse(state) {
     // response
     switch (this.action.type) {
       case "SET-LOADING-OBJECT":
-        this.setLoadingObj(this.action.loadingObj);
+        this.setLoadingObj(this.action.data.loadingObj);
         break;
 
       case "SET-GLOBAL-LOADING":
-        this.setGlobalLoading(this.action.bool);
+        this.setGlobalLoading(this.action.data.bool);
         break;
 
       case "SET-SINGLE-LOADING":
-        this.setLoading(this.action.name, this.action.bool);
+        this.setLoading(this.action.data.name, this.action.data.bool);
         break;
 
       default:
         break;
     }
-
-    const result = Object.create(this.state);
-    return result;
+    return {...this.state};
   }
 }
 const reducerFunction = (state = initialState, action) => {

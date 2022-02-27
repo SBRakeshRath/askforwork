@@ -180,7 +180,7 @@ export default function Login() {
           .then((tokenRes) => {
             if (tokenRes.data.code === "SUCCESS") {
               setSmallMessage(["suc", "successfully logged in"]);
-              navigate("/");
+              window.location.href = process.env.REACT_APP_LOGIN_DEFAULT_LINK
               return;
             }
 
