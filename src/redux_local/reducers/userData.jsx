@@ -1,6 +1,7 @@
 const initialState = {
   bio: "I am very good at my job. ",
-  name: "unknown",
+  name: { fName: false, lName: false, mName: false },
+
   profilePhoto: "https://picsum.photos/200",
   dob: {
     date: new Date().getDate(),
@@ -14,6 +15,8 @@ const initialState = {
   phoneNo_verified: false,
   token: false,
   additional: {},
+
+  account_disabled: true,
 };
 
 class userProfileData {
@@ -23,14 +26,17 @@ class userProfileData {
     this.type = action.type || "default";
   }
 
-  setData() {
-    this.state = this.action.data.data;
+  setData(data) {
+    this.state = {
+      ...this.state,
+      ...data,
+    };
   }
 
   reducer() {
     switch (this.action.type) {
-      case "FETCH_DATA":
-        this.setData();
+      case "SET_DATA":
+        this.setData(this.action.data);
 
         break;
 

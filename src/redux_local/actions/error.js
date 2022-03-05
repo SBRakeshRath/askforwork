@@ -14,5 +14,8 @@ class errorAction {
   showErrorMessage(bool) {
     return { type: "SHOW_ERROR_MESSAGE", bool: bool };
   }
+  setAutoError(error, message) {
+    return { type: "SET_AUTO_ERROR", error: error, message: message };
+  }
 }
 export default new errorAction();

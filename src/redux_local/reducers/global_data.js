@@ -1,5 +1,6 @@
 const initialState = {
   csurf_token: "",
+  login: true,
 };
 
 class globalVariablesReducers {
@@ -18,7 +19,7 @@ class globalVariablesReducers {
   reducerResponse() {
     // response
     switch (this.action.type) {
-      case "SET-GLOBAL-VARIABLES":
+      case "SET-GLOBAL-VARIABLE":
         this.setGlobalVariables(this.action.data.globalObj);
         break;
 
@@ -30,7 +31,7 @@ class globalVariablesReducers {
         break;
     }
 
-    return {...this.state};
+    return { ...this.state };
   }
 }
 const reducerFunction = (state = initialState, action) => {

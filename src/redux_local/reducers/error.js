@@ -5,6 +5,7 @@ const initialState = {
   disableSite: false,
   showErrorMessage: false,
 };
+// import { Dispatch } from "react";
 
 class errorReducerClass {
   constructor(state, action) {
@@ -24,7 +25,7 @@ class errorReducerClass {
         this.state.status = 500;
         break;
       case 401:
-        this.state.msg = "please re-login";
+        this.state.msg = "un authorized access";
         this.state.status = 401;
         break;
       default:
@@ -50,7 +51,6 @@ class errorReducerClass {
         this.state.msg = "Too many requests, Please try again after some time";
         break;
       default:
-        console.log(error.code);
         this.state.msg = "something wrong happened. Please try after Some time";
         this.state.status = 400;
         break;
@@ -62,6 +62,25 @@ class errorReducerClass {
     this.state.msg = error.message;
     this.state.button = error.button || false;
     this.state.disableSite = error.disableSite || false;
+  }
+  setAutoError(error, msg) {
+    this.showErrorMessage(true);
+
+    if (error.response) {
+      // axios error
+      this.setCustomAxiosError(error);
+
+      return;
+    }
+    if (error.code) {
+      this.firebaseError(error);
+      return;
+    }
+    this.setCustomError(error);
+
+    if (msg && msg !== "") {
+      this.state.msg = msg;
+    }
   }
   cleanError() {
     this.showErrorMessage(false);
@@ -91,11 +110,14 @@ class errorReducerClass {
       case "SHOW_ERROR_MESSAGE":
         this.showErrorMessage(this.action.bool);
         break;
+      case "SET_AUTO_ERROR":
+        this.setAutoError(this.action.error, this.action.message || "");
+        break;
       default:
         break;
     }
 
-    return {...this.state};
+    return { ...this.state };
   }
 }
 const reducerFunction = (state = initialState, action) => {

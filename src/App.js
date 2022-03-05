@@ -5,13 +5,15 @@ import Overlay from "g-components/overlays/overlay";
 import Login from "components/login/login";
 
 import { Routes, Route } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import globalVariables from "redux_local/thunks/global_variables/globalVaribale";
 import GlobalErrorMessageBox from "g-components/box/globalErrorMessageBox/globalErrorMessageBox";
+import StepRoute from "components/newUserSteps/stepsRoute";
 
 function App() {
   // error handling
   const dispatch = useDispatch();
+  const token = useSelector((state) => state.useProfilerData.token);
 
   React.useEffect(() => {
     dispatch(globalVariables());
@@ -24,6 +26,7 @@ function App() {
       </Overlay>
       <Routes>
         <Route path="/" element={<Login />}></Route>
+        <Route path="/userSteps/*" element={<StepRoute />}></Route>
       </Routes>
     </div>
   );

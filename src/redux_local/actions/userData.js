@@ -4,10 +4,8 @@ class userProfileAction {
   }
   setUserData(state) {
     return {
-      type: "FETCH_DATA",
-      data: {
-        data: state,
-      },
+      type: "SET_DATA",
+      data: state,
     };
   }
 }

@@ -1,6 +1,7 @@
 const initialState = {
   global: true,
-  dashboard : true 
+  dashboard : true ,
+  newUSerSteps : true
 };
 
 class loadingReducerClass {

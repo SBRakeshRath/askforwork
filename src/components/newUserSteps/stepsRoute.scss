@@ -1,0 +1,7 @@
+@use "./../../style/_config.sass" as dv;
+
+#newUserSteps {
+  flex-grow: 1;
+  position: relative;
+  @include dv.flex-column;
+}
